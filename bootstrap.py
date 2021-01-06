@@ -1,6 +1,6 @@
-import uuid 
-  
-id = uuid.uuid1() 
+import uuid
+
+id = uuid.uuid1()
 
 print(id)
 

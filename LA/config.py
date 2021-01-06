@@ -1,4 +1,4 @@
-# ChirpStack Config 
+# ChirpStack Config
 
 CHS_API_URL = "http://localhost:8080/api"
 CHS_USER = "admin"

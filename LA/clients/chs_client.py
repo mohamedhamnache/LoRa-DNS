@@ -135,12 +135,11 @@ class Chs_client:
                 txPow = 14
             # see tools.py in same dir
         if mType == "JoinRequest":
-            genFrame = Frame(sf, cr, snr, rssi, tmstp,joinEUI, devEUI, devNonce)
+            genFrame = Frame(sf, cr, snr, rssi, tmstp, joinEUI, devEUI, devNonce)
         else:
             genFrame = Frame(sf, cr, snr, rssi, fCnt, tmstp, devAddr)
         return genFrame
-            
-            
+
         """
         if devAddr in motes.keys():
             # checking if any packetloss
@@ -211,7 +210,7 @@ class Chs_client:
                         self.getDevEui()
 
                         if "uplinkFrame" in data["result"].keys():
-                            genFrame= handlerUp(data)
+                            genFrame = handlerUp(data)
                             print(genFrame)
                             """
                             try:
