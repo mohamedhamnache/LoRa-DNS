@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0d2339bc-af51-42d6-b93d-4443d251fe24" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JupyterTrust" id="a31a7826-24c8-425a-8c34-7f99c38964df" />
+  <component name="ProjectId" id="1lxmckD8kKOquAWPKwRLJAwOJwM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RunManager" selected="Python.chs_client">
+    <configuration name="chs_client" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LoRa-DNS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/LA/clients" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LA/clients/chs_client.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="network" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LoRa-DNS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/LA/models" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LA/models/network.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.chs_client" />
+        <item itemvalue="Python.network" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d2339bc-af51-42d6-b93d-4443d251fe24" name="Default Changelist" comment="" />
+      <created>1608547197847</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1608547197847</updated>
+      <workItem from="1608547199328" duration="158000" />
+      <workItem from="1608731287403" duration="182000" />
+      <workItem from="1608731520427" duration="1070000" />
+      <workItem from="1609758929032" duration="1474000" />
+      <workItem from="1609772596338" duration="449000" />
+      <workItem from="1609773060009" duration="4455000" />
+      <workItem from="1609840541482" duration="8851000" />
+      <workItem from="1609929481894" duration="4973000" />
+      <workItem from="1609941650872" duration="811000" />
+      <workItem from="1609945796952" duration="640000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="676" y="290" width="624" height="525" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1608731338913">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="676" y="290" width="624" height="525" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1608731338913" />
+    <state x="2688" y="403" width="374" height="272" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1609773099502">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2688" y="403" width="374" height="272" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609773099502" />
+    <state width="1807" height="236" key="GridCell.Tab.0.bottom" timestamp="1609943999470">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1874" height="286" key="GridCell.Tab.0.bottom/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609845191420" />
+    <state width="1807" height="286" key="GridCell.Tab.0.bottom/67.27.1853.1053/1920.0.1920.1080@67.27.1853.1053" timestamp="1609859955778" />
+    <state width="1807" height="236" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1609943999470" />
+    <state width="1807" height="236" key="GridCell.Tab.0.center" timestamp="1609943999469">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1874" height="286" key="GridCell.Tab.0.center/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609845191420" />
+    <state width="1807" height="286" key="GridCell.Tab.0.center/67.27.1853.1053/1920.0.1920.1080@67.27.1853.1053" timestamp="1609859955778" />
+    <state width="1807" height="236" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1609943999469" />
+    <state width="1807" height="236" key="GridCell.Tab.0.left" timestamp="1609943999469">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1874" height="286" key="GridCell.Tab.0.left/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609845191419" />
+    <state width="1807" height="286" key="GridCell.Tab.0.left/67.27.1853.1053/1920.0.1920.1080@67.27.1853.1053" timestamp="1609859955778" />
+    <state width="1807" height="236" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1609943999469" />
+    <state width="1807" height="236" key="GridCell.Tab.0.right" timestamp="1609943999469">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1874" height="286" key="GridCell.Tab.0.right/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609845191420" />
+    <state width="1807" height="286" key="GridCell.Tab.0.right/67.27.1853.1053/1920.0.1920.1080@67.27.1853.1053" timestamp="1609859955778" />
+    <state width="1807" height="236" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1609943999469" />
+    <state x="738" y="80" key="SettingsEditor" timestamp="1609939099122">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="2487" y="202" key="SettingsEditor/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609773577607" />
+    <state x="738" y="80" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1609939099122" />
+    <state x="656" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1609938186851">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="656" y="259" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1609938186851" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/LoRa_DNS$network.coverage" NAME="network Coverage Results" MODIFIED="1609759380391" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LA/models" />
+    <SUITE FILE_PATH="coverage/LoRa_DNS$chs_client.coverage" NAME="chs_client Coverage Results" MODIFIED="1609941847989" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LA/clients" />
+  </component>
+</project>
