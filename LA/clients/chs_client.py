@@ -134,21 +134,11 @@ class Chs_client:
                 # TxPower set to maximum at initialization
                 txPow = 14
             # see tools.py in same dir
-<<<<<<< HEAD
         if mType == "JoinRequest":
             genFrame = Frame(sf, cr, snr, rssi, tmstp,joinEUI, devEUI, devNonce)
         else:
             genFrame = Frame(sf, cr, snr, rssi, fCnt, tmstp, devAddr)
         return genFrame
-=======
-        print(devEUI)
-        print(joinEUI)
-        print(devNonce)
-        if mType == "JoinRequest":
-            genFrame = Frame(sf, cr, snr, rssi, fCnt, tmstp, joinEUI, devEUI, devNonce)
-        else:
-            genFrame = Frame(sf, cr, snr, rssi, fCnt, tmstp, devAddr)
->>>>>>> 41494cdcfdbffa23a9b5402d8be870fbecfb1ed0
             
             
         """
@@ -221,12 +211,8 @@ class Chs_client:
                         self.getDevEui()
 
                         if "uplinkFrame" in data["result"].keys():
-<<<<<<< HEAD
                             genFrame= handlerUp(data)
                             print(genFrame)
-=======
-                            handlerUp(data)
->>>>>>> 41494cdcfdbffa23a9b5402d8be870fbecfb1ed0
                             """
                             try:
                                 handlerUp(data)
