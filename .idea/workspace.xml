@@ -19,7 +19,21 @@
     <select />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="0d2339bc-af51-42d6-b93d-4443d251fe24" name="Default Changelist" comment="" />
+=======
+    <list default="true" id="0d2339bc-af51-42d6-b93d-4443d251fe24" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/LA/models/frame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LA/chs_client.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LA/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/LA/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA/Resources/Networks.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA/Resources/Networks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
+>>>>>>> 41494cdcfdbffa23a9b5402d8be870fbecfb1ed0
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,7 +51,10 @@
   </component>
   <component name="JupyterTrust" id="a31a7826-24c8-425a-8c34-7f99c38964df" />
   <component name="ProjectId" id="1lxmckD8kKOquAWPKwRLJAwOJwM" />
+<<<<<<< HEAD
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+=======
+>>>>>>> 41494cdcfdbffa23a9b5402d8be870fbecfb1ed0
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -122,7 +139,10 @@
       <workItem from="1609840541482" duration="8851000" />
       <workItem from="1609929481894" duration="4973000" />
       <workItem from="1609941650872" duration="811000" />
+<<<<<<< HEAD
       <workItem from="1609945796952" duration="640000" />
+=======
+>>>>>>> 41494cdcfdbffa23a9b5402d8be870fbecfb1ed0
     </task>
     <servers />
   </component>

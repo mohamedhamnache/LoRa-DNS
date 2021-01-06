@@ -5,9 +5,15 @@ class Frame:
         cr,
         snr,
         rssi,
+<<<<<<< HEAD
         tmstp,
         mType,
         fCnt=None,
+=======
+        fCnt,
+        tmstp,
+        mType,
+>>>>>>> 41494cdcfdbffa23a9b5402d8be870fbecfb1ed0
         joinEUI=None,
         devEUI=None,
         devNonce=None,
