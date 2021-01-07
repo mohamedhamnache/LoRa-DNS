@@ -1,4 +1,4 @@
 # BDD configuration
-SQLALCHEMY_DATABASE_URI= 'mysql://adminaevol:vol38ae@localhost/wb_aevol_DB'
-SQLALCHEMY_TRACK_MODIFICATIONS= False
-SECRET_KEY = 'vol38ae'
+SQLALCHEMY_DATABASE_URI = "mysql://lora_dns:lora_dns@localhost/LA_lora"
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SECRET_KEY = "lora@0309"
