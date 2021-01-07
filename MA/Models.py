@@ -8,9 +8,9 @@ class NetworkModel(db.Model):
     __tablename__ = "LA_Roaming_NW"
 
     ID_RNW = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    Net_ID = db.Column(db.String(120), unique=True, nullable=False)
+    Net_ID = db.Column(db.String(8), unique=True, nullable=False)
     dName = db.Column(db.String(120), unique=True, nullable=False)
-    ipAddr = db.Column(db.String(120), unique=True, nullable=False)
+    ipAddr = db.Column(db.String(15), unique=True, nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
 
     def save_to_db(self):
@@ -20,6 +20,14 @@ class NetworkModel(db.Model):
     @classmethod
     def find_by_dname(cls, dName):
         return cls.query.filter_by(dName=dName).first()
+
+    @classmethod
+    def find_by_netid(cls, Net_ID):
+        return cls.query.filter_by(Net_ID=Net_ID).first()
+
+    @classmethod
+    def find_by_ipaddr(cls, ipAddr):
+        return cls.query.filter_by(ipAddr=ipAddr).first()
 
     @classmethod
     def return_all(cls):
