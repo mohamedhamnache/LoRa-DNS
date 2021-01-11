@@ -21,13 +21,13 @@ class Network(Resource):
                 "message": "Network with Domaine Name {} already exists".format(
                     data["dName"]
                 )
-            }
+            },409
         elif NetworkModel.find_by_ipaddr(data["ipAddr"]):
             return {
                 "message": "Network with IP Address {} already exists".format(
                     data["ipAddr"]
                 )
-            }
+            },409
         else:
             loop = True
             while loop:

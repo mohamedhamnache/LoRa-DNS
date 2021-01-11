@@ -1,5 +1,8 @@
-from config import ADDRESS
+from config import IP_ADDRESS, D_NAME
 
 
 class Network:
-    pass
+    def __init__(self):
+        self.ip = IP_ADDRESS
+        self.dName = D_NAME
+        self.net_id = None
