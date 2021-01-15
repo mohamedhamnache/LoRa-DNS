@@ -6,8 +6,8 @@ CHS_PASSWORD = "lora@0309"
 
 # Opetator Config
 
-IP_ADDRESS = "192.168.5.10"
-D_NAME = "LA1.fr"
+IP_ADDRESS = "192.168.5.11"
+D_NAME = "LA2.fr"
 NET_ID = None
 
 # Database Credentials

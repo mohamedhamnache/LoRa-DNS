@@ -4,4 +4,4 @@ from db.models.db_network import DbNetwork
 from db.models.db_dns import DbDNS
 
 Base.metadata.create_all(bind=engine)
-#Session = sessionmaker(bind=engine)
+# Session = sessionmaker(bind=engine)
