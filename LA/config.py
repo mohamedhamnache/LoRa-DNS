@@ -15,5 +15,6 @@ DB_HOST = "localhost"  # 127.0.0.1
 DB_USER = "lora_dns"
 DB_PASS = "lora_dns"
 DB_NAME = "LA_db"
+# DB_NAME = "test"
 # DB_PORT = '' add port if not default
 DB_URL = "mysql://" + DB_USER + ":" + DB_PASS + "@" + DB_HOST + "/" + DB_NAME

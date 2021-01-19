@@ -1,4 +1,5 @@
 from db.models.db_network import DbNetwork
+from db.models.db_network import DbNetwork
 import datetime
 
 print(DbNetwork.return_all_Networks())

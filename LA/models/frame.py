@@ -21,9 +21,9 @@ class Frame:
         self.tmstp = tmstp
         self.timeOnAir = 0
         self.mType = mType
+        self.devEUI = devEUI
         if self.mType == "JoinRequest":
             self.joinEUI = joinEUI
-            self.devEUI = devEUI
             self.devNonce = devNonce
         else:
             self.devAddr = devAddr

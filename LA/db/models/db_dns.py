@@ -12,16 +12,16 @@ class DbDNS(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     ipAddr = Column(String(15), unique=True, nullable=False)
-    dName = Column(String(16), unique=True, nullable=False)
+    dName = Column(String(100), unique=True, nullable=False)
     fNet_ID = Column(String(8), ForeignKey("Network.Net_ID"))
-    fdevAddr = Column(String(16), ForeignKey("Device.devAddr"))
+    fdevEUI = Column(String(16), ForeignKey("Device.devEUI"))
     registered_on = Column(Date, nullable=False)
 
-    def __init__(self, ipAddr, dName, net_id, devAddr, registered_on):
+    def __init__(self, ipAddr, dName, net_id, devEUI, registered_on):
         self.ipAddr = ipAddr
         self.dName = dName
         self.fNet_ID = net_id
-        self.fdevAddr = devAddr
+        self.fdevEUI = devEUI
         self.registered_on = registered_on
 
     def save_to_db(self):
