@@ -3,6 +3,8 @@ import json
 
 from config import CHS_API_URL, CHS_USER, CHS_PASSWORD
 from models.frame import Frame
+from models.device_context import DeviceContext
+
 
 motes = {}
 
@@ -42,20 +44,6 @@ class Chs_client:
         except:
             self.token = None
             raise Exception(r)
-
-    def getDevEui(self):
-        if not self.token:
-            self.connect()
-        headers = {
-            "Accept": "application/json",
-            "Grpc-Metadata-Authorization": "Bearer " + self.token,
-        }
-        params = (("limit", "100"),)
-        response = requests.get(self.url + "/devices", headers=headers, params=params)
-        r = json.loads(response.content.decode())
-        for devs in r["result"]:
-            if devs["devEUI"] not in self.devEuis:
-                self.devEuis.append(devs["devEUI"])
 
     def check_valid_response(self, data, cpt=0):
 
@@ -109,16 +97,6 @@ class Chs_client:
             devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
                 "devNonce"
             ]
-        else:
-            devAddr = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                "fhdr"
-            ]["devAddr"]
-            fCnt = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                "fhdr"
-            ]["fCnt"]
-
-            # if not devAddr in self.devAddrs.keys():
-            # raise UnknownDevice(devAddr)
 
             b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
                 "frmPayload"
@@ -237,6 +215,54 @@ class Chs_client:
                         self.startFrameHandler(gatewayid, handlerUp, handlerDown)
                     """
 
+    def get_devices(self):
+        self.devEuis = []
+        self.devAddrs = {}
+        if not self.token:
+            self.connect()
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        params = (("limit", "100"),)
+        response = requests.get(self.url + "/devices", headers=headers, params=params)
+        r = json.loads(response.content.decode())
+        for devs in r["result"]:
+            if devs["devEUI"] not in self.devEuis:
+                self.devEuis.append(devs["devEUI"])
+
+    def get_device_context(self, dev_eui):
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        response = requests.get(
+            self.url + "/devices/" + dev_eui + "/activation", headers=headers
+        )
+        context = json.loads(response.content.decode())["deviceActivation"]
+        devEUI = context["devEUI"]
+        devAddr = context["devAddr"]
+        appSKey = context["appSKey"]
+        nwkSEncKey = context["nwkSEncKey"]
+        sNwkSIntKey = context["sNwkSIntKey"]
+        fNwkSIntKey = context["fNwkSIntKey"]
+        context = DeviceContext(
+            devEUI,
+            None,
+            devAddr,
+            appSKey,
+            fNwkSIntKey,
+            sNwkSIntKey,
+            nwkSEncKey,
+            None,
+            None,
+        )
+        return context
+
 
 class UnknownDevice(Exception):
     pass
@@ -259,7 +285,6 @@ class InvalidTxPow(Exception):
 
 
 test = Chs_client()
-test.startFrameHandler("3235313214003900", test.uplinkHandler)
-
+test.get_devices()
 print(test.devEuis)
-print(test.devAddrs)
+test.get_device_context("70b3d549967ceb93")
