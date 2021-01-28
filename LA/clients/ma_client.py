@@ -30,16 +30,26 @@ class La_client:
         else:
             print(response.json())
 
-    def register_device(self):
+    def register_device(self, devEUI,appKey):
         network = DbNetwork.find_by_dname(D_NAME)
+
         if not network:
             return {"message": "Network does not exist"}
+        net_id = network.Net_ID
+        loop = True
+        while loop:
+            device_id = uuid.uuid1().hex[:8]
+            joinEUI = str(net_id) + str(device_id)
+            print(joinEUI)
+            if not DbDevice.find_by_joinEUI(joinEUI):
+                loop = False
 
-        device = DbDevice(
-            "DEADDEAD0009DEAA", "66b80c060009deaa", "66b80c06", datetime.datetime.now()
-        )
+        device = DbDevice(devEUI, joinEUI, net_id,appKey, datetime.datetime.now())
         try:
             device.save_to_db()
+            # print(device.devEUI)
+            # print(device.joinEUI)
+            # print(device.fNet_ID)
             print("A new Device is Created Successfuly")
         except:
             print("The Added Device Can Not Be Saved to Database")
@@ -54,5 +64,6 @@ class La_client:
 
 
 la = La_client()
-la.register_device()
+# la.register_network()
+la.register_device("beefbeefdeadbeef")
 # la.dns_resolver("e822bfaae822bfacd")

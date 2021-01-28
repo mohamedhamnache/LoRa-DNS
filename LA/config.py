@@ -4,10 +4,11 @@ CHS_API_URL = "http://localhost:8080/api"
 CHS_USER = "admin"
 CHS_PASSWORD = "lora@0309"
 
+
 # Opetator Config
 
-IP_ADDRESS = "192.168.5.11"
-D_NAME = "LA2.fr"
+IP_ADDRESS = "192.168.5.13"
+D_NAME = "la-toulouse.fr"
 NET_ID = None
 
 # Database Credentials

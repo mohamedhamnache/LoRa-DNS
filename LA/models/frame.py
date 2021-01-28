@@ -1,3 +1,6 @@
+from utils.frame_utils import reverse_endian
+
+
 class Frame:
     def __init__(
         self,
@@ -12,6 +15,7 @@ class Frame:
         devEUI=None,
         devNonce=None,
         devAddr=None,
+        mic=None,
     ):
         self.sf = sf
         self.cr = cr
@@ -25,5 +29,13 @@ class Frame:
         if self.mType == "JoinRequest":
             self.joinEUI = joinEUI
             self.devNonce = devNonce
+            self.MIC = mic
+            self.PHYPayload = (
+                "00"
+                + reverse_endian(joinEUI)
+                + reverse_endian(devEUI)
+                + reverse_endian(devNonce)
+                + self.MIC
+            )
         else:
             self.devAddr = devAddr

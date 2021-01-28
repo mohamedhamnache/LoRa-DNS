@@ -1,6 +1,6 @@
 import requests
 import json
-
+import queue
 from config import CHS_API_URL, CHS_USER, CHS_PASSWORD
 from models.frame import Frame
 from models.device_context import DeviceContext
@@ -16,6 +16,7 @@ class Chs_client:
         self.password = CHS_PASSWORD
         self.devEuis = []
         self.token = None
+        self.frames = queue.Queue()
 
     def connect(self):
 
@@ -23,7 +24,7 @@ class Chs_client:
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        print(self.url + "/internal/login")
+        # print(self.url + "/internal/login")
 
         data = (
             '{ "password": "'
@@ -32,7 +33,8 @@ class Chs_client:
             + self.username
             + '" \n }'
         )
-        print(data)
+
+        # print(data)
         response = requests.post(
             self.url + "/internal/login", headers=headers, data=data
         )
@@ -44,6 +46,24 @@ class Chs_client:
         except:
             self.token = None
             raise Exception(r)
+
+    def get_devices(self):
+        self.devEuis = []
+        self.devAddrs = {}
+        if not self.token:
+            self.connect()
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        params = (("limit", "100"),)
+        response = requests.get(self.url + "/devices", headers=headers, params=params)
+        r = json.loads(response.content.decode())
+        for devs in r["result"]:
+            if devs["devEUI"] not in self.devEuis:
+                self.devEuis.append(devs["devEUI"])
 
     def check_valid_response(self, data, cpt=0):
 
@@ -97,6 +117,23 @@ class Chs_client:
             devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
                 "devNonce"
             ]
+            mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"]["mic"]
+
+            # see tools.py in same dir
+        if mType == "JoinRequest":
+            genFrame = Frame(
+                sf,
+                cr,
+                snr,
+                rssi,
+                tmstp,
+                mType,
+                joinEUI=joinEUI,
+                devEUI=devEUI,
+                devNonce=devNonce,
+                mic=mic,
+            )
+        else:
 
             b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
                 "frmPayload"
@@ -111,11 +148,8 @@ class Chs_client:
             else:
                 # TxPower set to maximum at initialization
                 txPow = 14
-            # see tools.py in same dir
-        if mType == "JoinRequest":
-            genFrame = Frame(sf, cr, snr, rssi, tmstp, joinEUI, devEUI, devNonce)
-        else:
-            genFrame = Frame(sf, cr, snr, rssi, fCnt, tmstp, devAddr)
+
+            genFrame = Frame(sf, cr, snr, rssi, tmstp, mType, fCnt, devAddr)
         return genFrame
 
         """
@@ -185,11 +219,12 @@ class Chs_client:
                     # check if it is an error message
                     if self.check_valid_response(data):
                         # Updating known devices
-                        self.getDevEui()
+                        self.get_devices()
 
                         if "uplinkFrame" in data["result"].keys():
                             genFrame = handlerUp(data)
-                            print(genFrame)
+                            self.frames.put(genFrame)
+                            # print(genFrame)
                             """
                             try:
                                 handlerUp(data)
@@ -214,24 +249,6 @@ class Chs_client:
                     else:
                         self.startFrameHandler(gatewayid, handlerUp, handlerDown)
                     """
-
-    def get_devices(self):
-        self.devEuis = []
-        self.devAddrs = {}
-        if not self.token:
-            self.connect()
-        if not self.token:
-            self.connect()
-        headers = {
-            "Accept": "application/json",
-            "Grpc-Metadata-Authorization": "Bearer " + self.token,
-        }
-        params = (("limit", "100"),)
-        response = requests.get(self.url + "/devices", headers=headers, params=params)
-        r = json.loads(response.content.decode())
-        for devs in r["result"]:
-            if devs["devEUI"] not in self.devEuis:
-                self.devEuis.append(devs["devEUI"])
 
     def get_device_context(self, dev_eui):
         if not self.token:
@@ -285,6 +302,9 @@ class InvalidTxPow(Exception):
 
 
 test = Chs_client()
-test.get_devices()
-print(test.devEuis)
-test.get_device_context("70b3d549967ceb93")
+# test.get_devices()
+# print(test.devEuis)
+c = test.get_device_context("70b3d549967ceb93")
+print("devEUi: ", c.devEUI)
+print("devAddr : ", c.devAddr)
+# test.connect()
