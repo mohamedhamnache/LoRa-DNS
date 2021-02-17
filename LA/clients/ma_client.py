@@ -30,7 +30,7 @@ class La_client:
         else:
             print(response.json())
 
-    def register_device(self, devEUI,appKey):
+    def register_device(self, devEUI, appKey):
         network = DbNetwork.find_by_dname(D_NAME)
 
         if not network:
@@ -40,11 +40,11 @@ class La_client:
         while loop:
             device_id = uuid.uuid1().hex[:8]
             joinEUI = str(net_id) + str(device_id)
-            print(joinEUI)
+            #print(joinEUI)
             if not DbDevice.find_by_joinEUI(joinEUI):
                 loop = False
 
-        device = DbDevice(devEUI, joinEUI, net_id,appKey, datetime.datetime.now())
+        device = DbDevice(devEUI, joinEUI, net_id, appKey, datetime.datetime.now())
         try:
             device.save_to_db()
             # print(device.devEUI)
@@ -54,16 +54,27 @@ class La_client:
         except:
             print("The Added Device Can Not Be Saved to Database")
 
-    def dns_resolver(self, joinEUI):
+    def dns_resolver(self, joinEUI, PHYPayload):
         url = "http://localhost:9106/api/dns-resolver"
 
-        payload = '{"join-eui": "' + joinEUI + '"}'
+        payload = (
+            '{"join-eui":"'
+            + joinEUI
+            + '","dname_src":"'
+            + D_NAME
+            + '", "ip_src": "'
+            + IP_ADDRESS
+            + '", "PHYPayload": "'
+            + PHYPayload
+            + '"}'
+        )
+
         headers = {"Content-Type": "application/json"}
         response = requests.request("GET", url, headers=headers, data=payload)
         print(response.text)
 
 
-la = La_client()
-# la.register_network()
-la.register_device("beefbeefdeadbeef")
-# la.dns_resolver("e822bfaae822bfacd")
+#la = La_client()
+#la.register_network()
+#la.register_device('BEEFDEAD0009DEA','BEEF456789ABCDEF0123456789ABCDEF')
+#la.dns_resolver("fe5440fa627b60cc")

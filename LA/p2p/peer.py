@@ -1,5 +1,5 @@
 import threading
-
+from pyThingPark.lorawan import JoinRequest
 from clients.chs_client import Chs_client
 from clients.ma_client import La_client
 
@@ -17,8 +17,12 @@ while True:
     if frames.qsize() - qsize > 0:
         frame = frames.get()
         if frame.mType == "JoinRequest":
-            print(frame.joinEUI)
+            # print(frame.joinEUI)
             joinEUI = frame.joinEUI
-            ma_client.dns_resolver(joinEUI)
+            print(frame.PHYPayload)
+            # print("DevNonce : ", frame.devNonce)
+            # print("*********************************")
+            # print(JoinRequest.fromPayload(frame.PHYPayload))
+            #ma_client.dns_resolver(joinEUI, frame.PHYPayload)
         qsize = chs_client.frames.qsize()
         print(qsize)

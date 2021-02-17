@@ -117,7 +117,7 @@ class Chs_client:
             devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
                 "devNonce"
             ]
-            mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"]["mic"]
+            mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mic"]
 
             # see tools.py in same dir
         if mType == "JoinRequest":
@@ -152,45 +152,6 @@ class Chs_client:
             genFrame = Frame(sf, cr, snr, rssi, tmstp, mType, fCnt, devAddr)
         return genFrame
 
-        """
-        if devAddr in motes.keys():
-            # checking if any packetloss
-            print("[DEBUG] LastFrameCounter=" + str(motes[devAddr].lastFrameCounter) + " | fCnt =" + str(fCnt))
-            if motes[devAddr].lastFrameCounter == fCnt - 1:
-                # no loss
-                #motes[devAddr].lastFrame = genFrame
-                #motes[devAddr].lastFrameCounter = fCnt
-                # check if spreading factor value is correct
-                if 7 <= sf <= 12:
-                    # store the frames data per device address for ADR processing
-                    motes[devAddr].framesLog[fCnt] = [snr, sf, txPow, rssi]
-                # reset frames history upon communication reinit
-                if fCnt == 0:
-                    motes[devAddr].framesLog.clear()
-                # act when frames history is complete
-                if len(motes[devAddr].framesLog) == self.adrLog:
-                    # execute adr
-                    callAdr = adr.adr(motes[devAddr].framesLog)
-                    newParameters = callAdr.anotherADR()
-                    print("[OUTPUT ADR] SF=" + str(newParameters[0]) + " | TX_IDX=" + str(newParameters[1]))
-                    self.sendUpdate(newParameters[0], newParameters[1], ChMask, devAddr)
-                    # reset frames history
-                    motes[devAddr].framesLog.clear()
-                    # reset loss counter
-                    motes[devAddr].sumPacketsLoss = 0
-            else:
-                # loss, if loss limit is reached, worst case parameters are sent
-                print("[DEBUG] PACKET LOSS !!!")
-                motes[devAddr].sumPacketsLoss += 1
-                motes[devAddr].lastFrame.simulatedTimeOnAir = timeOnAir * (fCnt - motes[devAddr].lastFrameCounter)
-                motes[devAddr].lastFrameCounter = fCnt
-                if motes[devAddr].sumPacketsLoss >= 10:
-                    self.sendUpdate(12, 1, ChMask, devAddr)
-        else:
-            motes[devAddr] = mote(devAddr, fCnt, genFrame)
-        # return genFrame
-        """
-
     def startFrameHandler(self, gatewayid, handlerUp):
         if not self.token:
             self.connect()
@@ -220,35 +181,13 @@ class Chs_client:
                     if self.check_valid_response(data):
                         # Updating known devices
                         self.get_devices()
-
+                        print("[Check] Registered Devices are : ", self.devEuis)
                         if "uplinkFrame" in data["result"].keys():
                             genFrame = handlerUp(data)
-                            self.frames.put(genFrame)
-                            # print(genFrame)
-                            """
-                            try:
-                                handlerUp(data)
-                            except UnknownDevice as e:
-                                print("[NET ERROR] Device " + str(e) + " not registered with our gateway")
-                            except NotAJoinRequestHandler:
-                                print("[PY ERR] JoinRequest passed in UplinkHandler")
-                            except IgnoreFrame as e:
-                                print("[NET ERROR] Frame " + str(e) + " in UplinkHandler")
-                            except InvalidSF as e:
-                                print("[ADR ERROR] Trying to update with SF=" + str(e))
-                            except InvalidTxPow as e:
-                                print("[ADR ERROR] Trying to update with PwrIdx=" + str(e))
-                            except:
-                                print("[PY ERR] Unable to decode following uplink message :" + str(data))
-                                traceback.print_exc()
-                        else:
-                            try:
-                                handlerDown(data)
-                            except:
-                                print("[PY ERR] Unable to decode following downlink message :" + str(data))
-                    else:
-                        self.startFrameHandler(gatewayid, handlerUp, handlerDown)
-                    """
+                            print("[Check] check JoinReq Source")
+                            if genFrame.devEUI not in self.devEuis:
+                                self.frames.put(genFrame)
+                                # print(genFrame)
 
     def get_device_context(self, dev_eui):
         if not self.token:
@@ -304,7 +243,7 @@ class InvalidTxPow(Exception):
 test = Chs_client()
 # test.get_devices()
 # print(test.devEuis)
-c = test.get_device_context("70b3d549967ceb93")
-print("devEUi: ", c.devEUI)
-print("devAddr : ", c.devAddr)
+# c = test.get_device_context("70b3d549967ceb93")
+# print("devEUI: ", c.devEUI)
+# print("devAddr : ", c.devAddr)
 # test.connect()

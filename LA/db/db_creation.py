@@ -35,11 +35,11 @@ class DbDevice(Base):
     registered_on = Column(Date, nullable=False)
     # resolve = relationship("DNS")
 
-    def __init__(self, devEUI, joinEUI, net_id, appKey,registered_on):
+    def __init__(self, devEUI, joinEUI, net_id, appKey, registered_on):
         self.devEUI = devEUI
         self.joinEUI = joinEUI
         self.fNet_ID = net_id
-        self.appKey =appKey
+        self.appKey = appKey
         self.registered_on = registered_on
 
 

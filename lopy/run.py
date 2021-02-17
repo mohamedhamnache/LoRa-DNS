@@ -12,8 +12,8 @@ import ubinascii
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.EU868, adr=True)
 
 # create an OTAA authentication parameters
-app_eui = ubinascii.unhexlify("BEEFBEEFDEADDEAD")
-app_key = ubinascii.unhexlify("5B78A031CE57F8E8475644997CADFF3C")
+app_eui = ubinascii.unhexlify("70b3d57ed0038811")
+app_key = ubinascii.unhexlify("F5610866F48203FC0BEFCC073BA7C051")
 
 
 def join(lora, app_eui, app_key):

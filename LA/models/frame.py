@@ -28,13 +28,13 @@ class Frame:
         self.devEUI = devEUI
         if self.mType == "JoinRequest":
             self.joinEUI = joinEUI
-            self.devNonce = devNonce
+            self.devNonce = hex(int(devNonce)).split("x")[-1]
             self.MIC = mic
             self.PHYPayload = (
                 "00"
-                + reverse_endian(joinEUI)
-                + reverse_endian(devEUI)
-                + reverse_endian(devNonce)
+                + reverse_endian(str(joinEUI))
+                + reverse_endian(str(devEUI))
+                + reverse_endian(str(self.devNonce))
                 + self.MIC
             )
         else:

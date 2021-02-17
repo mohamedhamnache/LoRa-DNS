@@ -9,6 +9,7 @@ CHS_PASSWORD = "lora@0309"
 
 IP_ADDRESS = "192.168.5.13"
 D_NAME = "la-toulouse.fr"
+PORT = 6000
 NET_ID = None
 
 # Database Credentials
