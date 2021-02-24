@@ -20,20 +20,19 @@ class MA_dns(Resource):
         ip_src = data["ip_src"]
         dname_src = data["dname_src"]
         PHYPayload = data["PHYPayload"]
-        #print(data)
+        # print(data)
         # print(net_id)
         try:
             nwk = NetworkModel.find_by_netid(Net_ID=net_id)
             if nwk:
-                #print(nwk.dName)
-                data =  {
-                    "PHYPayload":PHYPayload,
-                    "dName": nwk.dName, 
-                    "ipAddr": nwk.ipAddr    
+                # print(nwk.dName)
+                data = {
+                    "PHYPayload": PHYPayload,
+                    "dName": nwk.dName,
+                    "ipAddr": nwk.ipAddr,
                 }
-                url = nwk.ipAddr+':9000'
-                
-                
+                url = nwk.ipAddr + ":9000"
+
                 return {"dName": nwk.dName, "ipAddr": nwk.ipAddr,}, 200
             else:
                 return {"message": "Resource not found"}, 404

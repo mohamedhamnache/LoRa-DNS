@@ -40,7 +40,7 @@ class La_client:
         while loop:
             device_id = uuid.uuid1().hex[:8]
             joinEUI = str(net_id) + str(device_id)
-            #print(joinEUI)
+            # print(joinEUI)
             if not DbDevice.find_by_joinEUI(joinEUI):
                 loop = False
 
@@ -74,7 +74,7 @@ class La_client:
         print(response.text)
 
 
-#la = La_client()
-#la.register_network()
-#la.register_device('BEEFDEAD0009DEA','BEEF456789ABCDEF0123456789ABCDEF')
-#la.dns_resolver("fe5440fa627b60cc")
+# la = La_client()
+# la.register_network()
+# la.register_device('BEEFDEAD0009DEA','BEEF456789ABCDEF0123456789ABCDEF')
+# la.dns_resolver("fe5440fa627b60cc")

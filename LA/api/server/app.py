@@ -6,5 +6,6 @@ api_bp = Blueprint("api", __name__)
 api = Api(api_bp)
 
 from Resources import joinRequest
-
-api.add_resource(joinRequest.JoinRequestHandler,'/joinrequest')
+from Resources import joinResponse
+api.add_resource(joinRequest.JoinRequestHandler, "/joinrequest")
+api.add_resource(joinRequest.JoinResponseHandler, "/joinresponse")

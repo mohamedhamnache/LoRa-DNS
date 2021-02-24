@@ -2,8 +2,10 @@ import requests
 import json
 import queue
 from config import CHS_API_URL, CHS_USER, CHS_PASSWORD
+from config import DEVICE_PROFILE_NAME, ORGANIZATION_ID, APPLICATION_ID
 from models.frame import Frame
-from models.device_context import DeviceContext
+
+# from models.device_context import DeviceContext
 
 
 motes = {}
@@ -199,25 +201,104 @@ class Chs_client:
         response = requests.get(
             self.url + "/devices/" + dev_eui + "/activation", headers=headers
         )
-        context = json.loads(response.content.decode())["deviceActivation"]
-        devEUI = context["devEUI"]
-        devAddr = context["devAddr"]
-        appSKey = context["appSKey"]
-        nwkSEncKey = context["nwkSEncKey"]
-        sNwkSIntKey = context["sNwkSIntKey"]
-        fNwkSIntKey = context["fNwkSIntKey"]
-        context = DeviceContext(
-            devEUI,
-            None,
-            devAddr,
-            appSKey,
-            fNwkSIntKey,
-            sNwkSIntKey,
-            nwkSEncKey,
-            None,
-            None,
-        )
+        context = json.loads(response.content.decode())
+        context["deviceActivation"]["appSKey"] = "00000000000000000000000000000000"
         return context
+
+    def get_device(self, devEUI):
+        """
+            Get device information 
+            :devEUI
+            :nwkKey
+            :appKey
+            :genAppKey
+        """
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        url = self.url + "/devices/" + devEUI
+        response = requests.get(url, headers=headers)
+        device = json.loads(response.content.decode())["device"]
+        return {"device": device}
+
+    def get_device_keys(self, devEUI):
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        url = self.url + "/devices/" + devEUI + "/keys"
+        response = requests.get(url, headers=headers)
+        keys = json.loads(response.content.decode())
+        keys["deviceKeys"]["appKey"] = "00000000000000000000000000000000"
+        return keys
+
+    def get_roaming_device_profile_id(self):
+        params = (
+            ("limit", "100"),
+            ("offset", "1"),
+            ("organizationID", ORGANIZATION_ID),
+            ("applicationID", APPLICATION_ID),
+        )
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        url = self.url + "/device-profiles"
+        response = requests.get(url, headers=headers, params=params)
+        profiles = json.loads(response.content.decode())
+        for p in profiles['result']:
+            if p['name'] == DEVICE_PROFILE_NAME:
+                return p['id']
+        return None
+
+    def create_device(self, device):
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        devEUI = device["device"]["devEUI"]
+        url = self.url + "/devices/" + devEUI
+        response = requests.post(url, headers=headers, data=device)
+        print(response.status_code)
+
+    def set_device_context(self, context):
+        """
+            Set device context
+        """
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        devEUI = context["deviceActivation"]["devEUI"]
+        url = self.url + "/devices/" + devEUI
+        response = requests.post(url, headers=headers, data=context)
+        print(response.status_code)
+
+    def set_device_keys(self, keys):
+        """
+            Set Device Keys
+        """
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        devEUI = keys["deviceKeys"]["devEUI"]
+        url = self.url + "/devices/" + devEUI + "/keys"
+        response = requests.post(url, headers=headers, data=keys)
+        print(response.status_code)
 
 
 class UnknownDevice(Exception):
@@ -247,3 +328,7 @@ test = Chs_client()
 # print("devEUI: ", c.devEUI)
 # print("devAddr : ", c.devAddr)
 # test.connect()
+#print(test.get_device("beefdead0009deaa"))
+print(test.get_roaming_device_profile_id())
+# print(test.get_device_keys('beefdead0009deaa'))
+# print(test.get_device_context('beefdead0009deaa'))
