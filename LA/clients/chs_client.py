@@ -1,6 +1,7 @@
 import requests
 import json
 import queue
+import logging
 from config import CHS_API_URL, CHS_USER, CHS_PASSWORD
 from config import DEVICE_PROFILE_NAME, ORGANIZATION_ID, APPLICATION_ID
 from models.frame import Frame
@@ -87,72 +88,67 @@ class Chs_client:
     def uplinkHandler(self, frame):
         uplinkTypes = ["UnconfirmedDataUp", "ConfirmedDataUp", "JoinRequest"]
         mType = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mhdr"]["mType"]
-        if mType not in uplinkTypes:
-            raise IgnoreFrame(mType)
-        sf = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"][
-            "spreadingFactor"
-        ]
-        cr = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"]["codeRate"][
-            2:
-        ]
-        snr = frame["result"]["uplinkFrame"]["rxInfo"][0]["loRaSNR"]
-        rssi = frame["result"]["uplinkFrame"]["rxInfo"][0]["rssi"]
-        tmstp = frame["result"]["uplinkFrame"]["rxInfo"][0]["time"]
-        ChMask = []
-        for i in range(0, 4):
-            ChMask.append(1)
-        for j in range(5, 15):
-            ChMask.append(0)
-
-        if (
-            not "fhdr"
-            in frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"].keys()
-        ):
-            # raise NotAJoinRequestHandler()
-            print("This is a Join Request")
-            joinEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                "joinEUI"
+        if mType in uplinkTypes:
+            # raise IgnoreFrame(mType)
+            sf = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"][
+                "spreadingFactor"
             ]
-            devEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                "devEUI"
+            cr = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"]["codeRate"][
+                2:
             ]
-            devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                "devNonce"
-            ]
-            mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mic"]
+            snr = frame["result"]["uplinkFrame"]["rxInfo"][0]["loRaSNR"]
+            rssi = frame["result"]["uplinkFrame"]["rxInfo"][0]["rssi"]
+            tmstp = frame["result"]["uplinkFrame"]["rxInfo"][0]["time"]
+            ChMask = []
+            for i in range(0, 4):
+                ChMask.append(1)
+            for j in range(5, 15):
+                ChMask.append(0)
 
-            # see tools.py in same dir
-        if mType == "JoinRequest":
-            genFrame = Frame(
-                sf,
-                cr,
-                snr,
-                rssi,
-                tmstp,
-                mType,
-                joinEUI=joinEUI,
-                devEUI=devEUI,
-                devNonce=devNonce,
-                mic=mic,
-            )
-        else:
+            if (
+                not "fhdr"
+                in frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"].keys()
+            ):
+                # raise NotAJoinRequestHandler()
+                print("This is a Join Request")
+                joinEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
+                    "joinEUI"
+                ]
+                devEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
+                    "devEUI"
+                ]
+                devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
+                    "devNonce"
+                ]
+                mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mic"]
 
-            b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                "frmPayload"
-            ][0]["bytes"]
-            # dirty calculation of the size in bytes of the payload
-            if b64Payload:
-                payloadSize = len(b64Payload) * 3 / 4 - b64Payload.count("=", -2)
+                # see tools.py in same dir
+            if mType == "JoinRequest":
+                genFrame = Frame(
+                    sf,
+                    cr,
+                    snr,
+                    rssi,
+                    tmstp,
+                    mType,
+                    joinEUI=joinEUI,
+                    devEUI=devEUI,
+                    devNonce=devNonce,
+                    mic=mic,
+                )
             else:
-                payloadSize = 0
-            if self.currentTxPow is not None:
-                txPow = self.currentTxPow
-            else:
-                # TxPower set to maximum at initialization
-                txPow = 14
 
-            genFrame = Frame(sf, cr, snr, rssi, tmstp, mType, fCnt, devAddr)
-        return genFrame
+                b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
+                    "frmPayload"
+                ][0]["bytes"]
+                # dirty calculation of the size in bytes of the payload
+                if b64Payload:
+                    payloadSize = len(b64Payload) * 3 / 4 - b64Payload.count("=", -2)
+                else:
+                    payloadSize = 0
+            
+                genFrame = Frame(sf, cr, snr, rssi, tmstp, mType, fCnt, devAddr)
+            return genFrame
 
     def startFrameHandler(self, gatewayid, handlerUp):
         if not self.token:
@@ -253,21 +249,25 @@ class Chs_client:
         url = self.url + "/device-profiles"
         response = requests.get(url, headers=headers, params=params)
         profiles = json.loads(response.content.decode())
-        for p in profiles['result']:
-            if p['name'] == DEVICE_PROFILE_NAME:
-                return p['id']
+        for p in profiles["result"]:
+            if p["name"] == DEVICE_PROFILE_NAME:
+                return p["id"]
         return None
 
     def create_device(self, device):
+        logging.info('Creating a New Roaming Device')
         if not self.token:
             self.connect()
         headers = {
             "Accept": "application/json",
             "Grpc-Metadata-Authorization": "Bearer " + self.token,
         }
+        device['device'] ['applicationID'] = APPLICATION_ID
         devEUI = device["device"]["devEUI"]
-        url = self.url + "/devices/" + devEUI
-        response = requests.post(url, headers=headers, data=device)
+        #print(devEUI)
+        url = self.url + "/devices"
+        #print(json.dumps(device))
+        response = requests.post(url, headers=headers, data=json.dumps(device))
         print(response.status_code)
 
     def set_device_context(self, context):
@@ -281,8 +281,9 @@ class Chs_client:
             "Grpc-Metadata-Authorization": "Bearer " + self.token,
         }
         devEUI = context["deviceActivation"]["devEUI"]
-        url = self.url + "/devices/" + devEUI
-        response = requests.post(url, headers=headers, data=context)
+        print(json.dumps(context))
+        url = self.url + "/devices/" + devEUI+'/activate'
+        response = requests.post(url, headers=headers, data=json.dumps(context))
         print(response.status_code)
 
     def set_device_keys(self, keys):
@@ -297,7 +298,7 @@ class Chs_client:
         }
         devEUI = keys["deviceKeys"]["devEUI"]
         url = self.url + "/devices/" + devEUI + "/keys"
-        response = requests.post(url, headers=headers, data=keys)
+        response = requests.post(url, headers=headers, data=json.dumps(keys))
         print(response.status_code)
 
 
@@ -321,14 +322,14 @@ class InvalidTxPow(Exception):
     pass
 
 
-test = Chs_client()
+# test = Chs_client()
 # test.get_devices()
 # print(test.devEuis)
 # c = test.get_device_context("70b3d549967ceb93")
 # print("devEUI: ", c.devEUI)
 # print("devAddr : ", c.devAddr)
 # test.connect()
-#print(test.get_device("beefdead0009deaa"))
-print(test.get_roaming_device_profile_id())
+# print(test.get_device("beefdead0009deaa"))
+# print(test.get_roaming_device_profile_id())
 # print(test.get_device_keys('beefdead0009deaa'))
 # print(test.get_device_context('beefdead0009deaa'))

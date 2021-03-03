@@ -9,7 +9,7 @@ from db.models.db_device import DbDevice
 
 class La_client:
     def register_network(self):
-        url = "http://localhost:9106/api/networks"
+        url = 'http://'+IP_ADDRESS+':9106/api/networks'
         nwk = Network()
         payload = '{"dName":"' + nwk.dName + '", "ipAddr": "' + nwk.ip + '"}'
         headers = {"Content-Type": "application/json"}
@@ -55,7 +55,7 @@ class La_client:
             print("The Added Device Can Not Be Saved to Database")
 
     def dns_resolver(self, joinEUI, PHYPayload):
-        url = "http://localhost:9106/api/dns-resolver"
+        url = 'http://'+IP_ADDRESS+':9106/api/dns-resolver'
 
         payload = (
             '{"join-eui":"'

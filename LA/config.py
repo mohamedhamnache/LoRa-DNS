@@ -7,9 +7,9 @@ CHS_PASSWORD = "lora@0309"
 
 # Opetator Config
 
-IP_ADDRESS = "192.168.5.13"
-D_NAME = "la-toulouse.fr"
-PORT = 6000
+IP_ADDRESS = "192.168.88.254"
+D_NAME = "vns.fr"
+PORT = 9000
 NET_ID = None
 
 # Database Credentials

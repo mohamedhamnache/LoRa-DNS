@@ -7,5 +7,6 @@ api = Api(api_bp)
 
 from Resources import joinRequest
 from Resources import joinResponse
+
 api.add_resource(joinRequest.JoinRequestHandler, "/joinrequest")
-api.add_resource(joinRequest.JoinResponseHandler, "/joinresponse")
+api.add_resource(joinResponse.JoinResponseHandler, "/joinresponse")

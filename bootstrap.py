@@ -5,7 +5,8 @@ id = uuid.uuid1()
 id = id.hex[:8]
 print(id)
 
-
+import logging
+logging.warning('mohamed hamnache')
 # Device
 """
 {

@@ -23,6 +23,6 @@ while True:
             # print("DevNonce : ", frame.devNonce)
             # print("*********************************")
             # print(JoinRequest.fromPayload(frame.PHYPayload))
-            # ma_client.dns_resolver(joinEUI, frame.PHYPayload)
+            ma_client.dns_resolver(joinEUI, frame.PHYPayload)
         qsize = chs_client.frames.qsize()
         print(qsize)
