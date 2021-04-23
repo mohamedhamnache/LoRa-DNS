@@ -12,12 +12,13 @@ import ubinascii
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.EU868, adr=True)
 
 # create an OTAA authentication parameters
-app_eui = ubinascii.unhexlify("70b3d57ed0038811")
-app_key = ubinascii.unhexlify("F5610866F48203FC0BEFCC073BA7C051")
+dev_eui = ubinascii.unhexlify("BEEFDEAD0009DEAC")
+app_eui = ubinascii.unhexlify("63bb9e78fafe4214")
+app_key = ubinascii.unhexlify("BEEF456789ABCDEF0123456789ABCDEF")
 
 
 def join(lora, app_eui, app_key):
-    lora.join(activation=LoRa.OTAA, auth=(app_eui, app_key), timeout=0, dr=0)
+    lora.join(activation=LoRa.OTAA, auth=(dev_eui, app_eui, app_key), timeout=0, dr=0)
     i = 0
     while not lora.has_joined() and i < 8:
         time.sleep(3)
@@ -69,7 +70,7 @@ def send_data():
         time.sleep(5)
 
 
-send_data()
+# send_data()
 # make the socket non-blocking
 # (because if there's no data received it will block forever...)
 

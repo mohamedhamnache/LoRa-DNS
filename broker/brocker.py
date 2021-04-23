@@ -1,51 +1,27 @@
-import paho.mqtt.client as mqttClient
-import time
-
-
+import paho.mqtt.client as mqtt
+import json
+# The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
 
-    if rc == 0:
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe("application/+/device/#")
 
-        print("Connected to broker")
+# The callback for when a PUBLISH message is received from the server.
+def on_message(client, userdata, msg):
+    print(msg.topic)
+    r = json.loads(msg.payload.decode())
+    print(r)
+    
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
 
-        global Connected  # Use global variable
-        Connected = True  # Signal connection
+client.connect("localhost", 1883)
 
-    else:
-
-        print("Connection failed")
-
-
-def on_message(client, userdata, message):
-    print("Message received: " + message.payload)
-
-
-Connected = False  # global variable for the state of the connection
-
-broker_address = "127.0.0.1"  # Broker address
-port = 1883  # Broker port
-user = "lora"  # Connection username
-password = "lora"  # Connection password
-
-client = mqttClient.Client("Python")  # create new instance
-client.username_pw_set(user, password=password)  # set username and password
-client.on_connect = on_connect  # attach function to callback
-client.on_message = on_message  # attach function to callback
-
-client.connect(broker_address, port=port)  # connect to broker
-
-client.loop_start()  # start the loop
-
-while Connected != True:  # Wait for connection
-    time.sleep(0.1)
-
-client.subscribe("mohamed/test/#")
-
-try:
-    while True:
-        time.sleep(1)
-
-except KeyboardInterrupt:
-    print("exiting")
-    client.disconnect()
-    client.loop_stop()
+# Blocking call that processes network traffic, dispatches callbacks and
+# handles reconnecting.
+# Other loop*() functions are available that give a threaded interface and a
+# manual interface.
+client.loop_forever()

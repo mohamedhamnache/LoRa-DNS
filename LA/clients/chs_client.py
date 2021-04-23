@@ -2,14 +2,14 @@ import requests
 import json
 import queue
 import logging
+
+# from pyThingPark.lorawan import UlUnconfFrame
 from config import CHS_API_URL, CHS_USER, CHS_PASSWORD
 from config import DEVICE_PROFILE_NAME, ORGANIZATION_ID, APPLICATION_ID
 from models.frame import Frame
+from log import logger
 
 # from models.device_context import DeviceContext
-
-
-motes = {}
 
 
 class Chs_client:
@@ -27,7 +27,6 @@ class Chs_client:
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        # print(self.url + "/internal/login")
 
         data = (
             '{ "password": "'
@@ -37,11 +36,9 @@ class Chs_client:
             + '" \n }'
         )
 
-        # print(data)
         response = requests.post(
             self.url + "/internal/login", headers=headers, data=data
         )
-        # print(response.content.decode())
         r = json.loads(response.content.decode())
         try:
             self.token = r["jwt"]
@@ -89,13 +86,12 @@ class Chs_client:
         uplinkTypes = ["UnconfirmedDataUp", "ConfirmedDataUp", "JoinRequest"]
         mType = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mhdr"]["mType"]
         if mType in uplinkTypes:
-            # raise IgnoreFrame(mType)
             sf = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"][
                 "spreadingFactor"
             ]
-            cr = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"]["codeRate"][
-                2:
-            ]
+            cr = frame["result"]["uplinkFrame"]["txInfo"]["loRaModulationInfo"][
+                "codeRate"
+            ][2:]
             snr = frame["result"]["uplinkFrame"]["rxInfo"][0]["loRaSNR"]
             rssi = frame["result"]["uplinkFrame"]["rxInfo"][0]["rssi"]
             tmstp = frame["result"]["uplinkFrame"]["rxInfo"][0]["time"]
@@ -110,43 +106,50 @@ class Chs_client:
                 in frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"].keys()
             ):
                 # raise NotAJoinRequestHandler()
-                print("This is a Join Request")
-                joinEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                    "joinEUI"
-                ]
-                devEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                    "devEUI"
-                ]
-                devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                    "devNonce"
-                ]
-                mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mic"]
+                # print("This is a Join Request")
+                if mType == "JoinRequest":
+
+                    joinEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"][
+                        "macPayload"
+                    ]["joinEUI"]
+                    devEUI = frame["result"]["uplinkFrame"]["phyPayloadJSON"][
+                        "macPayload"
+                    ]["devEUI"]
+                    devNonce = frame["result"]["uplinkFrame"]["phyPayloadJSON"][
+                        "macPayload"
+                    ]["devNonce"]
+                    mic = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["mic"]
+                    genFrame = Frame(
+                        sf,
+                        cr,
+                        snr,
+                        rssi,
+                        tmstp,
+                        mType,
+                        joinEUI=joinEUI,
+                        devEUI=devEUI,
+                        devNonce=devNonce,
+                        mic=mic,
+                    )
 
                 # see tools.py in same dir
-            if mType == "JoinRequest":
-                genFrame = Frame(
-                    sf,
-                    cr,
-                    snr,
-                    rssi,
-                    tmstp,
-                    mType,
-                    joinEUI=joinEUI,
-                    devEUI=devEUI,
-                    devNonce=devNonce,
-                    mic=mic,
-                )
-            else:
 
-                b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
-                    "frmPayload"
-                ][0]["bytes"]
+            else:
+                print(frame)
+                b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"][
+                    "macPayload"
+                ]["frmPayload"][0]["bytes"]
                 # dirty calculation of the size in bytes of the payload
                 if b64Payload:
                     payloadSize = len(b64Payload) * 3 / 4 - b64Payload.count("=", -2)
                 else:
                     payloadSize = 0
-            
+                fCnt = frame["result"]["uplinkFrame"]["phyPayloadJSON"]["macPayload"][
+                    "fhdr"
+                ]["fCnt"]
+                devAddr = frame["result"]["uplinkFrame"]["phyPayloadJSON"][
+                    "macPayload"
+                ]["fhdr"]["devAddr"]
                 genFrame = Frame(sf, cr, snr, rssi, tmstp, mType, fCnt, devAddr)
             return genFrame
 
@@ -179,13 +182,15 @@ class Chs_client:
                     if self.check_valid_response(data):
                         # Updating known devices
                         self.get_devices()
-                        print("[Check] Registered Devices are : ", self.devEuis)
+                        #print("[Check] Registered Devices are : ", self.devEuis)
                         if "uplinkFrame" in data["result"].keys():
                             genFrame = handlerUp(data)
                             print("[Check] check JoinReq Source")
-                            if genFrame.devEUI not in self.devEuis:
-                                self.frames.put(genFrame)
-                                # print(genFrame)
+                            if genFrame :
+                                if genFrame.mType == "JoinRequest":
+                                    if genFrame.devEUI not in self.devEuis:
+                                        self.frames.put(genFrame)
+                                        # print(genFrame)
 
     def get_device_context(self, dev_eui):
         if not self.token:
@@ -255,51 +260,59 @@ class Chs_client:
         return None
 
     def create_device(self, device):
-        logging.info('Creating a New Roaming Device')
+
         if not self.token:
             self.connect()
         headers = {
             "Accept": "application/json",
             "Grpc-Metadata-Authorization": "Bearer " + self.token,
         }
-        device['device'] ['applicationID'] = APPLICATION_ID
+        device["device"]["applicationID"] = APPLICATION_ID
         devEUI = device["device"]["devEUI"]
-        #print(devEUI)
+        logger.debug("Creating a New Roaming Device {}".format(devEUI))
+        # print(devEUI)
         url = self.url + "/devices"
-        #print(json.dumps(device))
+        # print(json.dumps(device))
         response = requests.post(url, headers=headers, data=json.dumps(device))
-        print(response.status_code)
+        if response.status_code != 200:
+            logger.error("Device Creation Failed")
 
     def set_device_context(self, context):
         """
             Set device context
         """
+        logger.debug("Set Device Context")
         if not self.token:
             self.connect()
         headers = {
             "Accept": "application/json",
             "Grpc-Metadata-Authorization": "Bearer " + self.token,
         }
+
         devEUI = context["deviceActivation"]["devEUI"]
-        print(json.dumps(context))
-        url = self.url + "/devices/" + devEUI+'/activate'
+        # print(json.dumps(context))
+        url = self.url + "/devices/" + devEUI + "/activate"
         response = requests.post(url, headers=headers, data=json.dumps(context))
-        print(response.status_code)
+        if response.status_code != 200:
+            logger.error("Failed to Set Device Context")
 
     def set_device_keys(self, keys):
         """
             Set Device Keys
         """
+        logger.debug("Set Device Keys")
         if not self.token:
             self.connect()
         headers = {
             "Accept": "application/json",
             "Grpc-Metadata-Authorization": "Bearer " + self.token,
         }
+
         devEUI = keys["deviceKeys"]["devEUI"]
         url = self.url + "/devices/" + devEUI + "/keys"
         response = requests.post(url, headers=headers, data=json.dumps(keys))
-        print(response.status_code)
+        if response.status_code != 200:
+            logger.error("Failed to Set Device keys")
 
 
 class UnknownDevice(Exception):

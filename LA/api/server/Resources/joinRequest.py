@@ -19,8 +19,8 @@ class JoinRequestHandler(Resource):
         )
         data = parser.parse_args()
         print(data)
-        if (data['PHYPayload']):
-        
+        if data["PHYPayload"]:
+
             jr = JoinRequest.fromPayload(data["PHYPayload"])
             device = DbDevice.find_by_joinEUI(jr.JoinEUI)
             if device:
@@ -32,9 +32,10 @@ class JoinRequestHandler(Resource):
                     device_info = chs_client.get_device(jr.DevEUI)
                     context = chs_client.get_device_context(jr.DevEUI)
                     device_keys = chs_client.get_device_keys(jr.DevEUI)
-                    joinResponseClient(data['ip_src'],9000,device_info,context,device_keys)
+                    joinResponseClient(
+                        data["ip_src"], 9000, device_info, context, device_keys
+                    )
                 else:
                     return {"message": "Invalide MIC"}, 300
             else:
                 return {"message": "Device Not Found"}, 301
-        

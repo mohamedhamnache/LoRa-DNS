@@ -3,6 +3,8 @@ from flask_restful import Resource, reqparse
 from Models import NetworkModel
 
 import json
+
+
 class MA_dns(Resource):
     def get(self):
         parser = reqparse.RequestParser()
@@ -38,20 +40,20 @@ class MA_dns(Resource):
                     + '"}'
                 )
                 payload = json.loads(payload)
-                #print(payload)
-                url = "http://"+nwk.ipAddr + ":9000/api/joinrequest"
-                #url = "http://localhost:9000/api/joinrequest"
+                # print(payload)
+                url = "http://" + nwk.ipAddr + ":9000/api/joinrequest"
+                # url = "http://localhost:9000/api/joinrequest"
                 headers = {"Accept": "application/json"}
                 response = requests.request("GET", url, headers=headers, data=payload)
-                #print(response.status_code)
-                if (response.status_code == 200):
-                    print('Peer is Reachable')
+                # print(response.status_code)
+                if response.status_code == 200:
+                    print("Peer is Reachable")
                     return {"dName": nwk.dName, "ipAddr": nwk.ipAddr,}, 200
-                else :
-                    print('Peer Unreachable')
+                else:
+                    print("Peer Unreachable")
                     return 404
             else:
                 return {"message": "Resource not found"}, 404
         except:
-            
+
             return {"error": "An error occurred !"}, 500

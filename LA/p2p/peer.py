@@ -3,6 +3,8 @@ from pyThingPark.lorawan import JoinRequest
 from clients.chs_client import Chs_client
 from clients.ma_client import La_client
 
+from datetime import datetime
+
 chs_client = Chs_client()
 ma_client = La_client()
 thread = threading.Thread(
@@ -17,6 +19,10 @@ while True:
     if frames.qsize() - qsize > 0:
         frame = frames.get()
         if frame.mType == "JoinRequest":
+            now = datetime.now()
+            start = datetime.timestamp(now)
+            with open("start.txt", "a") as f:
+                f.write(str(start) + "\n")
             # print(frame.joinEUI)
             joinEUI = frame.joinEUI
             print(frame.PHYPayload)
