@@ -1,7 +1,7 @@
 import requests
 import uuid
 import datetime
-from config import IP_ADDRESS, D_NAME
+from config import IP_ADDRESS, D_NAME, MA_IP_ADDRESS
 from models.network import Network
 from db.models.db_network import DbNetwork
 from db.models.db_device import DbDevice
@@ -11,7 +11,7 @@ from log import logger
 class La_client:
     def register_network(self):
 
-        url = "http://" + IP_ADDRESS + ":9106/api/networks"
+        url = "http://" + MA_IP_ADDRESS + ":9106/api/networks"
         nwk = Network()
         logger.debug("Network Registration : {} IP : {}".format(nwk.dName, nwk.ip))
         payload = '{"dName":"' + nwk.dName + '", "ipAddr": "' + nwk.ip + '"}'
@@ -58,7 +58,7 @@ class La_client:
             print("The Added Device Can Not Be Saved to Database")
 
     def dns_resolver(self, joinEUI, PHYPayload):
-        url = "http://" + IP_ADDRESS + ":9106/api/dns-resolver"
+        url = "http://" + MA_IP_ADDRESS + ":9106/api/dns-resolver"
 
         payload = (
             '{"join-eui":"'
@@ -74,7 +74,7 @@ class La_client:
 
         headers = {"Content-Type": "application/json"}
         response = requests.request("GET", url, headers=headers, data=payload)
-        print(response.text)
+        #print(response.text)
 
 
 # la = La_client()

@@ -42,5 +42,6 @@ class JoinResponseHandler(Resource):
                 end = datetime.timestamp(now)
                 with open("end.txt", "a") as f:
                     f.write(str(end) + "\n")
+                #print(end)
         except:
             logger.error("Join Response Handling Failed")

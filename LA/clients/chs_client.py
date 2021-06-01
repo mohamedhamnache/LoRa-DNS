@@ -69,7 +69,7 @@ class Chs_client:
 
         if cpt > 3:
             raise Exception(data)
-        print(data)
+        #print(data)
         if "error" in data.keys():
             print(type(data["error"]))
             if data["code"] == 16:
@@ -135,7 +135,7 @@ class Chs_client:
                 # see tools.py in same dir
 
             else:
-                print(frame)
+                #print(frame)
                 b64Payload = frame["result"]["uplinkFrame"]["phyPayloadJSON"][
                     "macPayload"
                 ]["frmPayload"][0]["bytes"]
@@ -166,7 +166,7 @@ class Chs_client:
             headers=headers,
             stream=True,
         ) as f:
-            print(f)
+            #print(f)
             for l in f.iter_lines():
                 if l:
                     decoded = l.decode()
@@ -176,7 +176,7 @@ class Chs_client:
                         .replace('}"', "}")
                     )
                     data = json.loads(trimmed)
-                    print(data)
+                    #print(data)
 
                     # check if it is an error message
                     if self.check_valid_response(data):
@@ -185,7 +185,7 @@ class Chs_client:
                         #print("[Check] Registered Devices are : ", self.devEuis)
                         if "uplinkFrame" in data["result"].keys():
                             genFrame = handlerUp(data)
-                            print("[Check] check JoinReq Source")
+                            #print("[Check] check JoinReq Source")
                             if genFrame :
                                 if genFrame.mType == "JoinRequest":
                                     if genFrame.devEUI not in self.devEuis:
@@ -269,7 +269,7 @@ class Chs_client:
         }
         device["device"]["applicationID"] = APPLICATION_ID
         devEUI = device["device"]["devEUI"]
-        logger.debug("Creating a New Roaming Device {}".format(devEUI))
+        #logger.debug("Creating a New Roaming Device {}".format(devEUI))
         # print(devEUI)
         url = self.url + "/devices"
         # print(json.dumps(device))
@@ -281,7 +281,7 @@ class Chs_client:
         """
             Set device context
         """
-        logger.debug("Set Device Context")
+        #logger.debug("Set Device Context")
         if not self.token:
             self.connect()
         headers = {
@@ -300,7 +300,7 @@ class Chs_client:
         """
             Set Device Keys
         """
-        logger.debug("Set Device Keys")
+        #logger.debug("Set Device Keys")
         if not self.token:
             self.connect()
         headers = {

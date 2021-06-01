@@ -25,7 +25,7 @@ while True:
                 f.write(str(start) + "\n")
             # print(frame.joinEUI)
             joinEUI = frame.joinEUI
-            print(frame.PHYPayload)
+            #print(frame.PHYPayload)
             # print("DevNonce : ", frame.devNonce)
             # print("*********************************")
             # print(JoinRequest.fromPayload(frame.PHYPayload))

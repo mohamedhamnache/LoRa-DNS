@@ -47,7 +47,7 @@ class MA_dns(Resource):
                 response = requests.request("GET", url, headers=headers, data=payload)
                 # print(response.status_code)
                 if response.status_code == 200:
-                    print("Peer is Reachable")
+                    #print("Peer is Reachable")
                     return {"dName": nwk.dName, "ipAddr": nwk.ipAddr,}, 200
                 else:
                     print("Peer Unreachable")

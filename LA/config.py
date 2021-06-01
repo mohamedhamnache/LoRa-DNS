@@ -25,4 +25,6 @@ DB_URL = "mysql://" + DB_USER + ":" + DB_PASS + "@" + DB_HOST + "/" + DB_NAME
 
 DEVICE_PROFILE_NAME = "Roaming-profile"
 ORGANIZATION_ID = "1"
-APPLICATION_ID = "5"
+APPLICATION_ID = "6"
+
+MA_IP_ADDRESS = "192.168.57.2"
