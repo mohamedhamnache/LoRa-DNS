@@ -7,8 +7,8 @@ CHS_PASSWORD = "lora@0309"
 
 # Opetator Config
 
-IP_ADDRESS = "192.168.88.254"
-D_NAME = "vns.fr"
+IP_ADDRESS = "192.168.57.2"
+D_NAME = "hns.fr"
 PORT = 9000
 NET_ID = None
 
@@ -27,4 +27,5 @@ DEVICE_PROFILE_NAME = "Roaming-profile"
 ORGANIZATION_ID = "1"
 APPLICATION_ID = "6"
 
-MA_IP_ADDRESS = "192.168.57.2"
+#MA_IP_ADDRESS = "192.168.57.2"
+MA_IP_ADDRESS = "localhost"

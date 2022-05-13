@@ -8,7 +8,7 @@ from db.models.db_device import DbDevice
 from log import logger
 
 
-class La_client:
+class La_client: 
     def register_network(self):
 
         url = "http://" + MA_IP_ADDRESS + ":9106/api/networks"
@@ -54,6 +54,7 @@ class La_client:
             # print(device.joinEUI)
             # print(device.fNet_ID)
             print("A new Device is Created Successfuly")
+            return device.devEUI, device.joinEUI
         except:
             print("The Added Device Can Not Be Saved to Database")
 
@@ -75,7 +76,7 @@ class La_client:
         headers = {"Content-Type": "application/json"}
         response = requests.request("GET", url, headers=headers, data=payload)
         #print(response.text)
-
+ 
 
 # la = La_client()
 # la.register_network()

@@ -39,18 +39,22 @@ class MA_dns(Resource):
                     + PHYPayload
                     + '"}'
                 )
-                payload = json.loads(payload)
-                # print(payload)
+                
+                #payload = json.loads(payload)
+                #print(payload)
                 url = "http://" + nwk.ipAddr + ":9000/api/joinrequest"
+                #print(url)
                 # url = "http://localhost:9000/api/joinrequest"
-                headers = {"Accept": "application/json"}
+                headers = {
+                          'Content-Type': 'application/json'
+                        }
                 response = requests.request("GET", url, headers=headers, data=payload)
                 # print(response.status_code)
                 if response.status_code == 200:
                     #print("Peer is Reachable")
                     return {"dName": nwk.dName, "ipAddr": nwk.ipAddr,}, 200
                 else:
-                    print("Peer Unreachable")
+                    #print("Peer Unreachable")
                     return 404
             else:
                 return {"message": "Resource not found"}, 404

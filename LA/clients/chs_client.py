@@ -276,6 +276,24 @@ class Chs_client:
         response = requests.post(url, headers=headers, data=json.dumps(device))
         if response.status_code != 200:
             logger.error("Device Creation Failed")
+    def create_owned_device(self, device):
+
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        devEUI = device["device"]["devEUI"]
+        #logger.debug("Creating a New Roaming Device {}".format(devEUI))
+        # print(devEUI)
+        url = self.url + "/devices"
+        #print(json.dumps(device))
+        #print(device)
+        response = requests.post(url, headers=headers, data=json.dumps(device))
+        #print(response.text)
+        if response.status_code != 200:
+            logger.error("Device Creation Failed")
 
     def set_device_context(self, context):
         """
@@ -313,6 +331,22 @@ class Chs_client:
         response = requests.post(url, headers=headers, data=json.dumps(keys))
         if response.status_code != 200:
             logger.error("Failed to Set Device keys")
+    def delete_device(self,devEUI):
+        """
+            delete Device 
+        """
+        #logger.debug("Set Device Keys")
+        if not self.token:
+            self.connect()
+        headers = {
+            "Accept": "application/json",
+            "Grpc-Metadata-Authorization": "Bearer " + self.token,
+        }
+        url = self.url + "/devices/" + devEUI
+        response = requests.delete(url, headers=headers)
+        if response.status_code != 200:
+            logger.error("Failed to Delete The Device {}".format(devEUI))
+        
 
 
 class UnknownDevice(Exception):
